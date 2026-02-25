@@ -34,6 +34,8 @@ This isn't just another programming language from some corporate lab or universi
 
 Some people deal with heartbreak by partying or pretending it doesn't hurt. I dealt with it by creating something that'll outlast both of us. Something that proves you don't need to be fake to matter. You just need to build something real.
 
+**[Read the full story →](STORY.md)**
+
 ---
 
 ## What is Kaynat++?
