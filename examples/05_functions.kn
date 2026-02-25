@@ -1,0 +1,35 @@
+begin program.
+note. function definition and calling demonstration.
+
+define a function called greet that takes name.
+    say hello, name, welcome to Kaynat++.
+end.
+
+define a function called add that takes a and b.
+    set sum to a.
+    add b to sum.
+    give back sum.
+end.
+
+define a function called factorial that takes n.
+    if n is equal to 0 then.
+        give back 1.
+    end.
+    
+    set result to n.
+    subtract 1 from n.
+    call factorial with n and store as sub_result.
+    multiply result by sub_result.
+    give back result.
+end.
+
+note. call the functions.
+call greet with Kaynat++.
+
+call add with 10 and 20 and store as sum.
+say the sum is sum.
+
+call factorial with 5 and store as fact.
+say factorial of 5 is fact.
+
+end program.

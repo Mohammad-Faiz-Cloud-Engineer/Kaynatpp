@@ -1,0 +1,22 @@
+begin program.
+note. simple calculator demonstration.
+
+set a to 10.
+set b to 5.
+
+add b to a.
+say the sum is a.
+
+set x to 20.
+set y to 3.
+
+multiply x by y.
+say the product is x.
+
+set total to 100.
+set count to 4.
+
+divide total by count.
+say the result is total.
+
+end program.

@@ -1,0 +1,17 @@
+begin program.
+note. fibonacci sequence - iterative approach.
+
+set n to 10.
+set a to 0.
+set b to 1.
+
+say fibonacci sequence up to n terms.
+
+repeat n times.
+    say a.
+    set temp to a.
+    add b to a.
+    set b to temp.
+end.
+
+end program.

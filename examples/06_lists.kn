@@ -1,0 +1,46 @@
+begin program.
+note. list operations demonstration.
+
+note. create a list.
+set fruits to a list containing apple, banana, cherry, date.
+
+say original list.
+for each fruit in fruits.
+    say fruit.
+end.
+
+note. add items.
+add elderberry to fruits.
+add fig to the front of fruits.
+
+say after adding items.
+for each fruit in fruits.
+    say fruit.
+end.
+
+note. remove items.
+remove banana from fruits.
+
+say after removing banana.
+for each fruit in fruits.
+    say fruit.
+end.
+
+note. get list length.
+find the length of fruits and store as count.
+say the list has count items.
+
+note. check if list contains item.
+check if fruits contains apple and store as has_apple.
+if has_apple is true then.
+    say the list contains apple.
+end.
+
+note. sort the list.
+sort fruits ascending.
+say sorted list.
+for each fruit in fruits.
+    say fruit.
+end.
+
+end program.

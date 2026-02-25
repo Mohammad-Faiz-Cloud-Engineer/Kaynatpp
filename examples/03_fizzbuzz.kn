@@ -1,0 +1,29 @@
+begin program.
+note. classic fizzbuzz problem.
+
+loop from 1 to 100.
+    set divisible_by_3 to false.
+    set divisible_by_5 to false.
+    
+    find the remainder of current divided by 3 and store as rem3.
+    if rem3 is equal to 0 then.
+        set divisible_by_3 to true.
+    end.
+    
+    find the remainder of current divided by 5 and store as rem5.
+    if rem5 is equal to 0 then.
+        set divisible_by_5 to true.
+    end.
+    
+    if divisible_by_3 is true and divisible_by_5 is true then.
+        say fizzbuzz.
+    otherwise if divisible_by_3 is true then.
+        say fizz.
+    otherwise if divisible_by_5 is true then.
+        say buzz.
+    otherwise.
+        say current.
+    end.
+end.
+
+end program.
