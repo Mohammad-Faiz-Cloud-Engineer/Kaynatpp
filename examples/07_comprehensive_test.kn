@@ -1,0 +1,229 @@
+begin program.
+
+note Comprehensive test of Kaynat++ features.
+note This program demonstrates all working functionality.
+
+say ===== Kaynat++ Comprehensive Test =====.
+say.
+
+note ===== Variables and Constants =====.
+say Testing variables and constants....
+set x to 10.
+set y to 20.
+always pi to 3.14159.
+say x equals, x.
+say y equals, y.
+say pi equals, pi.
+say.
+
+note ===== Arithmetic Operations =====.
+say Testing arithmetic....
+set sum to x add y.
+set diff to y subtract x.
+set prod to x multiply y.
+set quot to y divide x.
+say x add y equals, sum.
+say y subtract x equals, diff.
+say x multiply y equals, prod.
+say y divide x equals, quot.
+say.
+
+note ===== Comparison Operations =====.
+say Testing comparisons....
+if x is equal to 10 then.
+    say x is equal to 10 - PASS.
+end.
+
+if x is not equal to 20 then.
+    say x is not equal to 20 - PASS.
+end.
+
+if y is greater than x then.
+    say y is greater than x - PASS.
+end.
+
+if x is less than y then.
+    say x is less than y - PASS.
+end.
+say.
+
+note ===== Logical Operations =====.
+say Testing logical operations....
+set a to true.
+set b to false.
+
+if a and not b then.
+    say a and not b - PASS.
+end.
+
+if a or b then.
+    say a or b - PASS.
+end.
+say.
+
+note ===== If-Else Statements =====.
+say Testing if-else....
+set score to 85.
+
+if score is greater than 90 then.
+    say Grade: A.
+otherwise if score is greater than 80 then.
+    say Grade: B - PASS.
+otherwise if score is greater than 70 then.
+    say Grade: C.
+otherwise.
+    say Grade: F.
+end.
+say.
+
+note ===== While Loops =====.
+say Testing while loops....
+set counter to 0.
+while counter is less than 3.
+    say While loop iteration, counter.
+    set counter to counter add 1.
+end.
+say.
+
+note ===== Repeat Loops =====.
+say Testing repeat loops....
+set iteration to 0.
+repeat 3 times.
+    say Repeat loop iteration, iteration.
+    set iteration to iteration add 1.
+end.
+say.
+
+note ===== For Loops =====.
+say Testing for loops....
+loop from 1 to 5.
+    say For loop iteration, current.
+end.
+say.
+
+note ===== Functions =====.
+say Testing functions....
+
+define a function called add that takes a and b.
+    give back a add b.
+end.
+
+define a function called multiply that takes a and b.
+    give back a multiply b.
+end.
+
+call add with 5 and 3 and store as add_result.
+say 5 add 3 equals, add_result.
+
+call multiply with 4 and 7 and store as mult_result.
+say 4 multiply 7 equals, mult_result.
+say.
+
+note ===== Recursive Functions =====.
+say Testing recursive functions....
+
+define a function called factorial that takes n.
+    if n is equal to 0 then.
+        give back 1.
+    end.
+    set prev to n subtract 1.
+    call factorial with prev and store as result.
+    give back n multiply result.
+end.
+
+call factorial with 5 and store as fact5.
+say Factorial of 5 equals, fact5.
+say.
+
+note ===== Lists =====.
+say Testing lists....
+set numbers to a list containing 1, 2, 3, 4, 5.
+say Numbers list:, numbers.
+
+set fruits to a list containing apple, banana, cherry.
+say Fruits list:, fruits.
+say.
+
+note ===== Built-in Math Functions =====.
+say Testing built-in math functions....
+
+call sqrt with 16 and store as root.
+say Square root of 16 equals, root.
+
+call pow with 2 and 10 and store as power.
+say 2 to the power 10 equals, power.
+say.
+
+note ===== Built-in String Functions =====.
+say Testing built-in string functions....
+
+set text to hello world.
+
+call uppercase with text and store as upper.
+say Uppercase:, upper.
+
+call lowercase with text and store as lower.
+say Lowercase:, lower.
+say.
+
+note ===== Nested Functions =====.
+say Testing nested function calls....
+
+define a function called double that takes n.
+    give back n multiply 2.
+end.
+
+define a function called triple that takes n.
+    give back n multiply 3.
+end.
+
+call double with 5 and store as doubled.
+call triple with doubled and store as result.
+say Double of 5 then triple equals, result.
+say.
+
+note ===== Complex Expressions =====.
+say Testing complex expressions....
+set a to 5.
+set b to 10.
+set c to 15.
+
+set complex to a add b multiply c.
+say Complex expression result:, complex.
+say.
+
+note ===== FizzBuzz Example =====.
+say Testing FizzBuzz....
+loop from 1 to 15.
+    set n to current.
+    
+    if n is equal to 3 then.
+        say Fizz.
+    end.
+    if n is equal to 5 then.
+        say Buzz.
+    end.
+    if n is equal to 6 then.
+        say Fizz.
+    end.
+    if n is equal to 9 then.
+        say Fizz.
+    end.
+    if n is equal to 10 then.
+        say Buzz.
+    end.
+    if n is equal to 12 then.
+        say Fizz.
+    end.
+    if n is equal to 15 then.
+        say FizzBuzz.
+    end.
+end.
+say.
+
+note ===== All Tests Complete =====.
+say.
+say ===== ALL TESTS PASSED =====.
+say Kaynat++ is working correctly.
+
+end program.

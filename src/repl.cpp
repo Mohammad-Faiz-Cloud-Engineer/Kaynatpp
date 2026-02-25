@@ -4,6 +4,9 @@
  */
 
 #include "repl.hpp"
+#include "lexer/lexer.hpp"
+#include "parser/parser.hpp"
+#include "interpreter/interpreter.hpp"
 #include "errors/error_types.hpp"
 #include <iostream>
 #include <fstream>
@@ -15,6 +18,7 @@ void run_repl() {
     std::cout << "Kaynat++ REPL v1.0.0\n";
     std::cout << "Type 'exit' to quit, 'help' for help\n\n";
     
+    Interpreter interpreter;
     std::string line;
     
     while (true) {
@@ -52,8 +56,26 @@ void run_repl() {
         }
         
         try {
-            // TODO: Integrate lexer, parser, and interpreter
-            std::cout << "TODO: Execute: " << line << "\n";
+            // Add period if missing
+            if (!line.empty() && line.back() != '.') {
+                line += '.';
+            }
+            
+            // Lex
+            Lexer lexer(line);
+            auto tokens = lexer.tokenize();
+            
+            // Parse
+            Parser parser(tokens);
+            auto ast = parser.parse();
+            
+            // Execute
+            KaynatValue result = interpreter.execute(ast);
+            
+            // Print result if not null
+            if (!result.is_null()) {
+                std::cout << result.to_string() << "\n";
+            }
             
         } catch (const KaynatError& e) {
             std::cerr << e.formatted_message() << "\n";
@@ -78,9 +100,17 @@ void run_file(const std::string& filename) {
     }
     
     try {
-        // TODO: Integrate lexer, parser, and interpreter
-        std::cout << "TODO: Execute file: " << filename << "\n";
-        std::cout << "Source length: " << source.length() << " bytes\n";
+        // Lex
+        Lexer lexer(source);
+        auto tokens = lexer.tokenize();
+        
+        // Parse
+        Parser parser(tokens);
+        auto ast = parser.parse();
+        
+        // Execute
+        Interpreter interpreter;
+        interpreter.execute(ast);
         
     } catch (const KaynatError& e) {
         std::cerr << e.formatted_message() << "\n";
