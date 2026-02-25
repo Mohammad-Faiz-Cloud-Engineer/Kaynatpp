@@ -1,0 +1,34 @@
+begin program.
+note GUI calculator demonstration.
+
+create a window called calc_window.
+set the title of calc_window to "Kaynat++ Calculator".
+set the width of calc_window to 400.
+set the height of calc_window to 300.
+
+create a label called result_label.
+set the text of result_label to "Result: 0".
+
+create a text input called num1_input.
+set the placeholder of num1_input to "Enter first number".
+
+create a text input called num2_input.
+set the placeholder of num2_input to "Enter second number".
+
+create a button called add_button.
+set the text of add_button to "Add".
+
+create a button called multiply_button.
+set the text of multiply_button to "Multiply".
+
+place result_label at row 0 and column 0 in calc_window.
+place num1_input at row 1 and column 0 in calc_window.
+place num2_input at row 2 and column 0 in calc_window.
+place add_button at row 3 and column 0 in calc_window.
+place multiply_button at row 4 and column 0 in calc_window.
+
+show calc_window.
+
+say "Calculator GUI created successfully!".
+
+end program.

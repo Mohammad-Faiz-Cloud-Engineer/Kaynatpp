@@ -1,0 +1,27 @@
+begin program.
+note simple GUI demonstration.
+
+create a window called main_window.
+set the title of main_window to "Kaynat++ GUI Demo".
+set the width of main_window to 800.
+set the height of main_window to 600.
+set the background of main_window to "white".
+
+create a label called greeting_label.
+set the text of greeting_label to "Hello from Kaynat++ GUI!".
+
+create a button called submit_button.
+set the text of submit_button to "Click Me".
+
+create a text input called name_input.
+set the placeholder of name_input to "Enter your name".
+
+place greeting_label at row 0 and column 0 in main_window.
+place name_input at row 1 and column 0 in main_window.
+place submit_button at row 2 and column 0 in main_window.
+
+show main_window.
+
+say "GUI window created and displayed!".
+
+end program.

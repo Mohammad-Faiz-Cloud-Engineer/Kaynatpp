@@ -73,6 +73,11 @@ private:
     
     // Helper methods
     ASTNode parse_list_literal();
+    bool peek_ahead_for_gui();
+    ASTNode parse_gui_command();
+    ASTNode parse_gui_set_command();
+    ASTNode parse_gui_show();
+    ASTNode parse_gui_place();
 };
 
 } // namespace kaynat

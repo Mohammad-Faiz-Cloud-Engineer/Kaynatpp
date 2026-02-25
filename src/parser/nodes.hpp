@@ -35,6 +35,7 @@ struct DictNode;
 struct IndexNode;
 struct PropertyAccessNode;
 struct BlockNode;
+struct GUINode;
 
 /**
  * @brief Base AST node using variant
@@ -58,7 +59,8 @@ using ASTNode = std::variant<
     std::shared_ptr<DictNode>,
     std::shared_ptr<IndexNode>,
     std::shared_ptr<PropertyAccessNode>,
-    std::shared_ptr<BlockNode>
+    std::shared_ptr<BlockNode>,
+    std::shared_ptr<GUINode>
 >;
 
 /**
@@ -248,6 +250,31 @@ struct PropertyAccessNode {
  */
 struct BlockNode {
     std::vector<ASTNode> statements;
+    uint32_t line;
+};
+
+/**
+ * @brief GUI command node
+ */
+struct GUINode {
+    enum class Command {
+        CREATE_WINDOW,
+        SET_TITLE,
+        SET_WIDTH,
+        SET_HEIGHT,
+        SET_BACKGROUND,
+        SHOW_WINDOW,
+        CREATE_LABEL,
+        SET_TEXT,
+        CREATE_BUTTON,
+        CREATE_INPUT,
+        SET_PLACEHOLDER,
+        PLACE_WIDGET
+    };
+    
+    Command command;
+    std::string target;  // window/widget name
+    std::vector<ASTNode> arguments;
     uint32_t line;
 };
 

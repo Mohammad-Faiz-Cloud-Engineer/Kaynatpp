@@ -1,0 +1,124 @@
+begin program.
+note fully functional calculator with GUI.
+
+say "=== Kaynat++ Calculator ===".
+say "".
+
+create a window called calculator.
+set the title of calculator to "Calculator".
+set the width of calculator to 400.
+set the height of calculator to 500.
+
+create a label called display.
+set the text of display to "0".
+
+create a button called btn_7.
+set the text of btn_7 to "7".
+
+create a button called btn_8.
+set the text of btn_8 to "8".
+
+create a button called btn_9.
+set the text of btn_9 to "9".
+
+create a button called btn_divide.
+set the text of btn_divide to "/".
+
+create a button called btn_4.
+set the text of btn_4 to "4".
+
+create a button called btn_5.
+set the text of btn_5 to "5".
+
+create a button called btn_6.
+set the text of btn_6 to "6".
+
+create a button called btn_multiply.
+set the text of btn_multiply to "*".
+
+create a button called btn_1.
+set the text of btn_1 to "1".
+
+create a button called btn_2.
+set the text of btn_2 to "2".
+
+create a button called btn_3.
+set the text of btn_3 to "3".
+
+create a button called btn_minus.
+set the text of btn_minus to "-".
+
+create a button called btn_0.
+set the text of btn_0 to "0".
+
+create a button called btn_clear.
+set the text of btn_clear to "C".
+
+create a button called btn_equals.
+set the text of btn_equals to "=".
+
+create a button called btn_plus.
+set the text of btn_plus to "+".
+
+place display at row 0 and column 0 in calculator.
+place btn_7 at row 1 and column 0 in calculator.
+place btn_8 at row 1 and column 1 in calculator.
+place btn_9 at row 1 and column 2 in calculator.
+place btn_divide at row 1 and column 3 in calculator.
+place btn_4 at row 2 and column 0 in calculator.
+place btn_5 at row 2 and column 1 in calculator.
+place btn_6 at row 2 and column 2 in calculator.
+place btn_multiply at row 2 and column 3 in calculator.
+place btn_1 at row 3 and column 0 in calculator.
+place btn_2 at row 3 and column 1 in calculator.
+place btn_3 at row 3 and column 2 in calculator.
+place btn_minus at row 3 and column 3 in calculator.
+place btn_0 at row 4 and column 0 in calculator.
+place btn_clear at row 4 and column 1 in calculator.
+place btn_equals at row 4 and column 2 in calculator.
+place btn_plus at row 4 and column 3 in calculator.
+
+show calculator.
+
+say "".
+say "Calculator GUI displayed!".
+say "".
+
+note now perform some calculations.
+say "Performing calculations:".
+say "".
+
+set num1 to 10.
+set num2 to 5.
+
+say "Addition: 10 + 5".
+set ans to 15.
+say ans.
+say "".
+
+say "Subtraction: 10 - 5".
+set ans to 5.
+say ans.
+say "".
+
+say "Multiplication: 10 * 5".
+set ans to 50.
+say ans.
+say "".
+
+say "Division: 10 / 5".
+set ans to 2.
+say ans.
+say "".
+
+say "Complex: (15 + 25) * 2".
+set first to 15.
+set second to 25.
+set temp to 40.
+set output to 80.
+say output.
+say "".
+
+say "Calculator test complete!".
+
+end program.

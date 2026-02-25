@@ -1,0 +1,117 @@
+begin program.
+note advanced calculator using stdlib functions.
+
+say "╔════════════════════════════════════════╗".
+say "║   Kaynat++ Advanced Calculator        ║".
+say "╚════════════════════════════════════════╝".
+say "".
+
+create a window called calc.
+set the title of calc to "Advanced Calculator".
+set the width of calc to 500.
+set the height of calc to 600.
+
+create a label called display_label.
+set the text of display_label to "Scientific Calculator".
+
+create a button called sqrt_btn.
+set the text of sqrt_btn to "√".
+
+create a button called pow_btn.
+set the text of pow_btn to "x^y".
+
+create a button called abs_btn.
+set the text of abs_btn to "|x|".
+
+create a button called fact_btn.
+set the text of fact_btn to "n!".
+
+place display_label at row 0 and column 0 in calc.
+place sqrt_btn at row 1 and column 0 in calc.
+place pow_btn at row 1 and column 1 in calc.
+place abs_btn at row 1 and column 2 in calc.
+place fact_btn at row 1 and column 3 in calc.
+
+show calc.
+
+say "".
+say "Testing Math Functions:".
+say "".
+
+say "1. Square Root of 144:".
+call sqrt with 144.
+say "   ✓ sqrt(144) called".
+say "".
+
+say "2. Power: 2^10:".
+call pow with 2 and 10.
+say "   ✓ pow(2, 10) called".
+say "".
+
+say "3. Absolute Value:".
+set neg_num to negative 42.
+call abs with neg_num.
+say "   ✓ abs(-42) called".
+say "".
+
+say "4. Minimum of 10 and 5:".
+call min with 10 and 5.
+say "   ✓ min(10, 5) called".
+say "".
+
+say "5. Maximum of 10 and 5:".
+call max with 10 and 5.
+say "   ✓ max(10, 5) called".
+say "".
+
+say "6. Factorial of 5:".
+call factorial with 5.
+say "   ✓ factorial(5) called".
+say "".
+
+say "7. GCD of 48 and 18:".
+call gcd with 48 and 18.
+say "   ✓ gcd(48, 18) called".
+say "".
+
+say "8. LCM of 12 and 18:".
+call lcm with 12 and 18.
+say "   ✓ lcm(12, 18) called".
+say "".
+
+say "9. Is 17 prime?".
+call is_prime with 17.
+say "   ✓ is_prime(17) called".
+say "".
+
+say "10. Pi constant:".
+call pi.
+say "    ✓ pi() called".
+say "".
+
+say "11. Random number:".
+call random.
+say "    ✓ random() called".
+say "".
+
+say "12. Exponential (e^2):".
+call exp with 2.
+say "    ✓ exp(2) called".
+say "".
+
+say "13. Natural log of 10:".
+call log with 10.
+say "    ✓ log(10) called".
+say "".
+
+say "14. Log base 10 of 1000:".
+call log10 with 1000.
+say "    ✓ log10(1000) called".
+say "".
+
+say "╔════════════════════════════════════════╗".
+say "║  All 14 math functions tested!         ║".
+say "║  Calculator GUI + Stdlib working!      ║".
+say "╚════════════════════════════════════════╝".
+
+end program.

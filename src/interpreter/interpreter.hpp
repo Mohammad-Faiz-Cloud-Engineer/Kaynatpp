@@ -66,6 +66,7 @@ private:
     KaynatValue eval_index(const std::shared_ptr<IndexNode>& node);
     KaynatValue eval_property_access(const std::shared_ptr<PropertyAccessNode>& node);
     KaynatValue eval_block(const std::shared_ptr<BlockNode>& node);
+    KaynatValue eval_gui(const std::shared_ptr<GUINode>& node);
     
     // Helper methods
     void register_builtin_functions();

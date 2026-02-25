@@ -41,6 +41,7 @@ set(KAYNAT_SOURCES
     src/stdlib/string_tools.cpp
     src/stdlib/list_tools.cpp
     src/stdlib/other_tools.cpp
+    src/gui/gui_system.cpp
 )
 
 # ImGui sources (commented out until GUI is implemented)

@@ -213,6 +213,20 @@ const std::unordered_map<std::string, TokenType> Lexer::keywords_ = {
     {"contract", TokenType::CONTRACT},
     {"requires", TokenType::REQUIRES},
     {"private", TokenType::PRIVATE},
+    
+    // GUI keywords
+    {"window", TokenType::WINDOW},
+    {"title", TokenType::TITLE},
+    {"width", TokenType::WIDTH},
+    {"height", TokenType::HEIGHT},
+    {"background", TokenType::BACKGROUND},
+    {"label", TokenType::LABEL},
+    {"button", TokenType::BUTTON},
+    {"input", TokenType::INPUT},
+    {"placeholder", TokenType::PLACEHOLDER},
+    {"place", TokenType::PLACE},
+    {"row", TokenType::ROW},
+    {"column", TokenType::COLUMN},
 };
 
 Lexer::Lexer(std::string source)

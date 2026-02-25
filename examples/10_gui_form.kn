@@ -1,0 +1,51 @@
+begin program.
+note user registration form with GUI.
+
+create a window called form_window.
+set the title of form_window to "User Registration".
+set the width of form_window to 500.
+set the height of form_window to 400.
+set the background of form_window to "lightblue".
+
+create a label called title_label.
+set the text of title_label to "Create Your Account".
+
+create a label called name_label.
+set the text of name_label to "Full Name:".
+
+create a text input called name_input.
+set the placeholder of name_input to "Enter your full name".
+
+create a label called email_label.
+set the text of email_label to "Email:".
+
+create a text input called email_input.
+set the placeholder of email_input to "Enter your email".
+
+create a label called password_label.
+set the text of password_label to "Password:".
+
+create a text input called password_input.
+set the placeholder of password_input to "Enter password".
+
+create a button called submit_button.
+set the text of submit_button to "Register".
+
+create a button called cancel_button.
+set the text of cancel_button to "Cancel".
+
+place title_label at row 0 and column 0 in form_window.
+place name_label at row 1 and column 0 in form_window.
+place name_input at row 2 and column 0 in form_window.
+place email_label at row 3 and column 0 in form_window.
+place email_input at row 4 and column 0 in form_window.
+place password_label at row 5 and column 0 in form_window.
+place password_input at row 6 and column 0 in form_window.
+place submit_button at row 7 and column 0 in form_window.
+place cancel_button at row 8 and column 0 in form_window.
+
+show form_window.
+
+say "Registration form displayed!".
+
+end program.

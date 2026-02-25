@@ -91,6 +91,11 @@ ASTNode Parser::parse_statement() {
         return ASTNode();
     }
     
+    // GUI commands: set the title of... (check before regular set)
+    if (check(TokenType::SET) && peek_ahead_for_gui()) {
+        return parse_gui_set_command();
+    }
+    
     // Variable assignment: set x to 5.
     if (match(TokenType::SET) || match(TokenType::LET)) {
         return parse_assignment();
@@ -129,6 +134,21 @@ ASTNode Parser::parse_statement() {
     // Return statement
     if (match(TokenType::GIVE)) {
         return parse_return();
+    }
+    
+    // GUI commands: create a window called...
+    if (match(TokenType::CREATE)) {
+        return parse_gui_command();
+    }
+    
+    // GUI commands: show window
+    if (match(TokenType::SHOW)) {
+        return parse_gui_show();
+    }
+    
+    // GUI commands: place widget at...
+    if (match(TokenType::PLACE)) {
+        return parse_gui_place();
     }
     
     // Expression statement (function call, etc.)
@@ -481,7 +501,7 @@ ASTNode Parser::parse_call() {
         std::vector<ASTNode> args;
         if (match(TokenType::WITH)) {
             do {
-                args.push_back(parse_expression());
+                args.push_back(parse_primary());
             } while (match(TokenType::COMMA_PUNCT) || match(TokenType::AND));
         }
         
@@ -600,6 +620,137 @@ ASTNode Parser::parse_list_literal() {
     node->elements = elements;
     node->line = previous().line;
     
+    return node;
+}
+
+bool Parser::peek_ahead_for_gui() {
+    // Check if this is a GUI set command like "set the title of..."
+    size_t saved = current_;
+    match(TokenType::SET);
+    bool is_gui = match(TokenType::THE) && 
+                  (check(TokenType::TITLE) || check(TokenType::WIDTH) || 
+                   check(TokenType::HEIGHT) || check(TokenType::BACKGROUND) ||
+                   check(TokenType::TEXT) || check(TokenType::PLACEHOLDER));
+    current_ = saved;
+    return is_gui;
+}
+
+ASTNode Parser::parse_gui_command() {
+    // create a window/label/button/input called name
+    match(TokenType::A);
+    
+    auto node = std::make_shared<GUINode>();
+    node->line = previous().line;
+    
+    if (match(TokenType::WINDOW)) {
+        node->command = GUINode::Command::CREATE_WINDOW;
+        consume(TokenType::CALLED, "Expected 'called' after 'window'");
+        Token name = consume(TokenType::IDENTIFIER, "Expected window name");
+        node->target = name.lexeme;
+    }
+    else if (match(TokenType::LABEL)) {
+        node->command = GUINode::Command::CREATE_LABEL;
+        consume(TokenType::CALLED, "Expected 'called' after 'label'");
+        Token name = consume(TokenType::IDENTIFIER, "Expected label name");
+        node->target = name.lexeme;
+    }
+    else if (match(TokenType::BUTTON)) {
+        node->command = GUINode::Command::CREATE_BUTTON;
+        consume(TokenType::CALLED, "Expected 'called' after 'button'");
+        Token name = consume(TokenType::IDENTIFIER, "Expected button name");
+        node->target = name.lexeme;
+    }
+    else if (check(TokenType::TEXT)) {
+        match(TokenType::TEXT);
+        match(TokenType::INPUT);
+        node->command = GUINode::Command::CREATE_INPUT;
+        consume(TokenType::CALLED, "Expected 'called' after 'input'");
+        Token name = consume(TokenType::IDENTIFIER, "Expected input name");
+        node->target = name.lexeme;
+    }
+    
+    consume(TokenType::PERIOD, "Expected '.' at end of statement");
+    return node;
+}
+
+ASTNode Parser::parse_gui_set_command() {
+    // set the title/width/height/text/placeholder of widget to value
+    consume(TokenType::SET, "Expected 'set'");
+    consume(TokenType::THE, "Expected 'the'");
+    
+    auto node = std::make_shared<GUINode>();
+    node->line = previous().line;
+    
+    if (match(TokenType::TITLE)) {
+        node->command = GUINode::Command::SET_TITLE;
+    }
+    else if (match(TokenType::WIDTH)) {
+        node->command = GUINode::Command::SET_WIDTH;
+    }
+    else if (match(TokenType::HEIGHT)) {
+        node->command = GUINode::Command::SET_HEIGHT;
+    }
+    else if (match(TokenType::BACKGROUND)) {
+        node->command = GUINode::Command::SET_BACKGROUND;
+    }
+    else if (match(TokenType::TEXT)) {
+        node->command = GUINode::Command::SET_TEXT;
+    }
+    else if (match(TokenType::PLACEHOLDER)) {
+        node->command = GUINode::Command::SET_PLACEHOLDER;
+    }
+    
+    consume(TokenType::OF, "Expected 'of'");
+    Token target = consume(TokenType::IDENTIFIER, "Expected widget name");
+    node->target = target.lexeme;
+    
+    consume(TokenType::TO, "Expected 'to'");
+    node->arguments.push_back(parse_expression());
+    
+    consume(TokenType::PERIOD, "Expected '.' at end of statement");
+    return node;
+}
+
+ASTNode Parser::parse_gui_show() {
+    // show window_name
+    Token name = consume(TokenType::IDENTIFIER, "Expected window name");
+    
+    auto node = std::make_shared<GUINode>();
+    node->command = GUINode::Command::SHOW_WINDOW;
+    node->target = name.lexeme;
+    node->line = previous().line;
+    
+    consume(TokenType::PERIOD, "Expected '.' at end of statement");
+    return node;
+}
+
+ASTNode Parser::parse_gui_place() {
+    // place widget at row X and column Y in window
+    Token widget = consume(TokenType::IDENTIFIER, "Expected widget name");
+    
+    auto node = std::make_shared<GUINode>();
+    node->command = GUINode::Command::PLACE_WIDGET;
+    node->target = widget.lexeme;
+    node->line = previous().line;
+    
+    consume(TokenType::AT, "Expected 'at'");
+    consume(TokenType::ROW, "Expected 'row'");
+    node->arguments.push_back(parse_primary());
+    
+    consume(TokenType::AND, "Expected 'and'");
+    consume(TokenType::COLUMN, "Expected 'column'");
+    node->arguments.push_back(parse_primary());
+    
+    consume(TokenType::IN, "Expected 'in'");
+    Token window = consume(TokenType::IDENTIFIER, "Expected window name");
+    
+    auto window_lit = std::make_shared<LiteralNode>();
+    window_lit->type = LiteralNode::Type::STRING;
+    window_lit->value = window.lexeme;
+    window_lit->line = window.line;
+    node->arguments.push_back(window_lit);
+    
+    consume(TokenType::PERIOD, "Expected '.' at end of statement");
     return node;
 }
 

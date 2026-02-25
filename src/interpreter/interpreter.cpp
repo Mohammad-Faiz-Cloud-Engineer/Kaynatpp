@@ -6,6 +6,7 @@
 #include "interpreter.hpp"
 #include "../errors/error_types.hpp"
 #include "../stdlib/stdlib.hpp"
+#include "../gui/gui_system.hpp"
 #include <iostream>
 #include <cmath>
 #include <algorithm>
@@ -84,6 +85,9 @@ KaynatValue Interpreter::evaluate(const ASTNode& node) {
         }
         else if constexpr (std::is_same_v<T, std::shared_ptr<BlockNode>>) {
             return eval_block(arg);
+        }
+        else if constexpr (std::is_same_v<T, std::shared_ptr<GUINode>>) {
+            return eval_gui(arg);
         }
         
         return KaynatValue();
@@ -645,4 +649,140 @@ void Interpreter::register_stdlib_functions() {
     global_env_->define("is_url", KaynatValue(CallableType(stdlib::pattern_is_url)));
 }
 
+
+KaynatValue Interpreter::eval_gui(const std::shared_ptr<GUINode>& node) {
+    auto& gui_mgr = GUIManager::instance();
+    
+    switch (node->command) {
+        case GUINode::Command::CREATE_WINDOW: {
+            auto window = std::make_shared<Window>(node->target, 800, 600);
+            gui_mgr.register_window(node->target, window);
+            current_env_->define(node->target, KaynatValue());  // Store reference
+            break;
+        }
+        
+        case GUINode::Command::SET_TITLE: {
+            auto window = gui_mgr.get_window(node->target);
+            if (window && !node->arguments.empty()) {
+                KaynatValue val = evaluate(node->arguments[0]);
+                auto str = val.as_string();
+                if (str) window->title = *str;
+            }
+            break;
+        }
+        
+        case GUINode::Command::SET_WIDTH: {
+            auto window = gui_mgr.get_window(node->target);
+            if (window && !node->arguments.empty()) {
+                KaynatValue val = evaluate(node->arguments[0]);
+                auto num = val.as_int();
+                if (num) window->width = static_cast<int>(*num);
+            }
+            break;
+        }
+        
+        case GUINode::Command::SET_HEIGHT: {
+            auto window = gui_mgr.get_window(node->target);
+            if (window && !node->arguments.empty()) {
+                KaynatValue val = evaluate(node->arguments[0]);
+                auto num = val.as_int();
+                if (num) window->height = static_cast<int>(*num);
+            }
+            break;
+        }
+        
+        case GUINode::Command::SET_BACKGROUND: {
+            auto window = gui_mgr.get_window(node->target);
+            if (window && !node->arguments.empty()) {
+                KaynatValue val = evaluate(node->arguments[0]);
+                auto str = val.as_string();
+                if (str) window->background_color = *str;
+            }
+            break;
+        }
+        
+        case GUINode::Command::SHOW_WINDOW: {
+            auto window = gui_mgr.get_window(node->target);
+            if (window) window->show();
+            break;
+        }
+        
+        case GUINode::Command::CREATE_LABEL: {
+            auto label = std::make_shared<Label>("");
+            label->id = node->target;
+            current_env_->define(node->target, KaynatValue());
+            // Store widget for later access
+            gui_mgr.register_widget(node->target, label);
+            break;
+        }
+        
+        case GUINode::Command::SET_TEXT: {
+            auto widget = gui_mgr.get_widget(node->target);
+            if (widget && !node->arguments.empty()) {
+                KaynatValue val = evaluate(node->arguments[0]);
+                auto str = val.as_string();
+                if (str) {
+                    if (auto label = std::dynamic_pointer_cast<Label>(widget)) {
+                        label->text = *str;
+                    } else if (auto button = std::dynamic_pointer_cast<Button>(widget)) {
+                        button->text = *str;
+                    }
+                }
+            }
+            break;
+        }
+        
+        case GUINode::Command::CREATE_BUTTON: {
+            auto button = std::make_shared<Button>("");
+            button->id = node->target;
+            current_env_->define(node->target, KaynatValue());
+            gui_mgr.register_widget(node->target, button);
+            break;
+        }
+        
+        case GUINode::Command::CREATE_INPUT: {
+            auto input = std::make_shared<TextInput>("");
+            input->id = node->target;
+            current_env_->define(node->target, KaynatValue());
+            gui_mgr.register_widget(node->target, input);
+            break;
+        }
+        
+        case GUINode::Command::SET_PLACEHOLDER: {
+            auto widget = gui_mgr.get_widget(node->target);
+            if (widget && !node->arguments.empty()) {
+                KaynatValue val = evaluate(node->arguments[0]);
+                auto str = val.as_string();
+                if (str) {
+                    if (auto input = std::dynamic_pointer_cast<TextInput>(widget)) {
+                        input->placeholder = *str;
+                    }
+                }
+            }
+            break;
+        }
+        
+        case GUINode::Command::PLACE_WIDGET: {
+            auto widget = gui_mgr.get_widget(node->target);
+            if (widget && node->arguments.size() >= 3) {
+                // Get row, column, window name
+                auto row_val = evaluate(node->arguments[0]).as_int();
+                auto col_val = evaluate(node->arguments[1]).as_int();
+                auto win_val = evaluate(node->arguments[2]).as_string();
+                
+                if (row_val && col_val && win_val) {
+                    auto window = gui_mgr.get_window(*win_val);
+                    if (window) {
+                        widget->x = static_cast<int>(*col_val);
+                        widget->y = static_cast<int>(*row_val);
+                        window->add_widget(widget);
+                    }
+                }
+            }
+            break;
+        }
+    }
+    
+    return KaynatValue();
+}
 } // namespace kaynat

@@ -15,7 +15,8 @@ g++ -std=c++17 -Wall -Wextra -Wpedantic -O2 -I./src -o kaynat \
   src/stdlib/math_tools.cpp \
   src/stdlib/string_tools.cpp \
   src/stdlib/list_tools.cpp \
-  src/stdlib/other_tools.cpp
+  src/stdlib/other_tools.cpp \
+  src/gui/gui_system.cpp
 
 if [ $? -eq 0 ]; then
     echo "✓ Compilation successful!"
