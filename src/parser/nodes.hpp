@@ -25,6 +25,7 @@ struct UnaryOpNode;
 struct AssignmentNode;
 struct IfNode;
 struct WhileNode;
+struct RepeatNode;
 struct ForEachNode;
 struct FunctionDefNode;
 struct FunctionCallNode;
@@ -48,6 +49,7 @@ using ASTNode = std::variant<
     std::shared_ptr<AssignmentNode>,
     std::shared_ptr<IfNode>,
     std::shared_ptr<WhileNode>,
+    std::shared_ptr<RepeatNode>,
     std::shared_ptr<ForEachNode>,
     std::shared_ptr<FunctionDefNode>,
     std::shared_ptr<FunctionCallNode>,
@@ -157,6 +159,15 @@ struct IfNode {
  */
 struct WhileNode {
     ASTNode condition;
+    std::vector<ASTNode> body;
+    uint32_t line;
+};
+
+/**
+ * @brief Repeat N times loop
+ */
+struct RepeatNode {
+    ASTNode count;
     std::vector<ASTNode> body;
     uint32_t line;
 };

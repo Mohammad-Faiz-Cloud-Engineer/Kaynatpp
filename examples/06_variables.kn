@@ -1,0 +1,20 @@
+begin program.
+note demonstrating variables.
+
+set x to 10.
+say "x is".
+say x.
+
+set name to "Kaynat++".
+say "Language name:".
+say name.
+
+set active to true.
+say "Active status:".
+say active.
+
+always pi to 3.14159.
+say "Pi value:".
+say pi.
+
+end program.

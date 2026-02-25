@@ -216,8 +216,8 @@ ASTNode Parser::parse_repeat_loop() {
     consume(TokenType::END, "Expected 'end' to close repeat loop");
     consume(TokenType::PERIOD, "Expected '.' after 'end'");
     
-    // Convert to while loop: set __counter to 0, while __counter < count
-    auto node = std::make_shared<WhileNode>();
+    auto node = std::make_shared<RepeatNode>();
+    node->count = count;
     node->body = body;
     node->line = previous().line;
     
@@ -601,23 +601,6 @@ ASTNode Parser::parse_list_literal() {
     node->line = previous().line;
     
     return node;
-}
-
-ASTNode Parser::parse_dict_literal() {
-    // Not implemented yet
-    auto node = std::make_shared<DictNode>();
-    node->line = previous().line;
-    return node;
-}
-
-std::vector<ASTNode> Parser::parse_block() {
-    std::vector<ASTNode> statements;
-    
-    while (!check(TokenType::END) && !is_at_end()) {
-        statements.push_back(parse_statement());
-    }
-    
-    return statements;
 }
 
 } // namespace kaynat

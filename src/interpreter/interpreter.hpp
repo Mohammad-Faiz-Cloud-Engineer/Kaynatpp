@@ -56,6 +56,7 @@ private:
     KaynatValue eval_assignment(const std::shared_ptr<AssignmentNode>& node);
     KaynatValue eval_if(const std::shared_ptr<IfNode>& node);
     KaynatValue eval_while(const std::shared_ptr<WhileNode>& node);
+    KaynatValue eval_repeat(const std::shared_ptr<RepeatNode>& node);
     KaynatValue eval_for_each(const std::shared_ptr<ForEachNode>& node);
     KaynatValue eval_function_def(const std::shared_ptr<FunctionDefNode>& node);
     KaynatValue eval_function_call(const std::shared_ptr<FunctionCallNode>& node);

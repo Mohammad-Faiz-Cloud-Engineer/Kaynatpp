@@ -37,6 +37,10 @@ set(KAYNAT_SOURCES
     src/interpreter/environment.cpp
     src/interpreter/runtime_value.cpp
     src/errors/messages.cpp
+    src/stdlib/math_tools.cpp
+    src/stdlib/string_tools.cpp
+    src/stdlib/list_tools.cpp
+    src/stdlib/other_tools.cpp
 )
 
 # ImGui sources (commented out until GUI is implemented)

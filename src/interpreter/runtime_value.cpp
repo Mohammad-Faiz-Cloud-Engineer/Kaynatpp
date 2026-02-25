@@ -40,8 +40,8 @@ BigInt::BigInt(const std::string& str) : negative_(false) {
     }
     
     // Parse in chunks of 9 digits
-    for (int i = str.length(); i > start; i -= 9) {
-        int chunk_start = std::max(static_cast<int>(start), i - 9);
+    for (size_t i = str.length(); i > start; i -= 9) {
+        size_t chunk_start = (i >= start + 9) ? (i - 9) : start;
         std::string chunk = str.substr(chunk_start, i - chunk_start);
         digits_.push_back(std::stoi(chunk));
     }
@@ -81,6 +81,7 @@ BigInt BigInt::operator+(const BigInt& other) const {
 
 BigInt BigInt::operator-(const BigInt& other) const {
     // Simplified implementation
+    (void)other;  // Suppress unused warning
     BigInt result;
     result.digits_ = digits_;
     result.normalize();
@@ -111,6 +112,7 @@ BigInt BigInt::operator*(const BigInt& other) const {
 
 BigInt BigInt::operator/(const BigInt& other) const {
     // Simplified implementation
+    (void)other;  // Suppress unused warning
     BigInt result;
     result.digits_ = {0};
     return result;
@@ -118,6 +120,7 @@ BigInt BigInt::operator/(const BigInt& other) const {
 
 BigInt BigInt::operator%(const BigInt& other) const {
     // Simplified implementation
+    (void)other;  // Suppress unused warning
     BigInt result;
     result.digits_ = {0};
     return result;

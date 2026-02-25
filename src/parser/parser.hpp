@@ -73,8 +73,6 @@ private:
     
     // Helper methods
     ASTNode parse_list_literal();
-    ASTNode parse_dict_literal();
-    std::vector<ASTNode> parse_block();
 };
 
 } // namespace kaynat

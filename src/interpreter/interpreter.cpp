@@ -5,6 +5,7 @@
 
 #include "interpreter.hpp"
 #include "../errors/error_types.hpp"
+#include "../stdlib/stdlib.hpp"
 #include <iostream>
 #include <cmath>
 #include <algorithm>
@@ -53,6 +54,9 @@ KaynatValue Interpreter::evaluate(const ASTNode& node) {
         }
         else if constexpr (std::is_same_v<T, std::shared_ptr<WhileNode>>) {
             return eval_while(arg);
+        }
+        else if constexpr (std::is_same_v<T, std::shared_ptr<RepeatNode>>) {
+            return eval_repeat(arg);
         }
         else if constexpr (std::is_same_v<T, std::shared_ptr<ForEachNode>>) {
             return eval_for_each(arg);
@@ -320,6 +324,28 @@ KaynatValue Interpreter::eval_while(const std::shared_ptr<WhileNode>& node) {
     return last_value;
 }
 
+KaynatValue Interpreter::eval_repeat(const std::shared_ptr<RepeatNode>& node) {
+    KaynatValue count_value = evaluate(node->count);
+    
+    auto count_opt = count_value.as_int();
+    if (!count_opt.has_value()) {
+        throw TypeError("Integer", count_value.type_name(), node->line, 0);
+    }
+    
+    int64_t count = count_opt.value();
+    KaynatValue last_value;
+    
+    for (int64_t i = 0; i < count; i++) {
+        for (const auto& stmt : node->body) {
+            if (return_flag_) break;
+            last_value = evaluate(stmt);
+        }
+        if (return_flag_) break;
+    }
+    
+    return last_value;
+}
+
 KaynatValue Interpreter::eval_for_each(const std::shared_ptr<ForEachNode>& node) {
     KaynatValue iterable = evaluate(node->iterable);
     auto list = iterable.as_list();
@@ -478,7 +504,7 @@ KaynatValue Interpreter::eval_index(const std::shared_ptr<IndexNode>& node) {
     throw TypeError("List or Dictionary", object.type_name(), node->line, 0);
 }
 
-KaynatValue Interpreter::eval_property_access(const std::shared_ptr<PropertyAccessNode>& node) {
+KaynatValue Interpreter::eval_property_access([[maybe_unused]] const std::shared_ptr<PropertyAccessNode>& node) {
     // Not implemented yet
     return KaynatValue();
 }
@@ -499,69 +525,124 @@ void Interpreter::register_builtin_functions() {
 }
 
 void Interpreter::register_stdlib_functions() {
-    // Math functions
-    global_env_->define("sqrt", KaynatValue(CallableType([](std::vector<KaynatValue> args) -> KaynatValue {
-        if (args.size() != 1) {
-            throw RuntimeError("sqrt expects 1 argument", 0, 0);
-        }
-        auto num = args[0].as_float();
-        if (!num) {
-            auto int_val = args[0].as_int();
-            if (int_val) {
-                num = static_cast<double>(*int_val);
-            } else {
-                throw TypeError("Number", args[0].type_name(), 0, 0);
-            }
-        }
-        return KaynatValue(std::sqrt(*num));
-    })));
+    // Math functions (20)
+    global_env_->define("sqrt", KaynatValue(CallableType(stdlib::math_sqrt)));
+    global_env_->define("pow", KaynatValue(CallableType(stdlib::math_pow)));
+    global_env_->define("abs", KaynatValue(CallableType(stdlib::math_abs)));
+    global_env_->define("floor", KaynatValue(CallableType(stdlib::math_floor)));
+    global_env_->define("ceil", KaynatValue(CallableType(stdlib::math_ceil)));
+    global_env_->define("round", KaynatValue(CallableType(stdlib::math_round)));
+    global_env_->define("sin", KaynatValue(CallableType(stdlib::math_sin)));
+    global_env_->define("cos", KaynatValue(CallableType(stdlib::math_cos)));
+    global_env_->define("tan", KaynatValue(CallableType(stdlib::math_tan)));
+    global_env_->define("log", KaynatValue(CallableType(stdlib::math_log)));
+    global_env_->define("log10", KaynatValue(CallableType(stdlib::math_log10)));
+    global_env_->define("exp", KaynatValue(CallableType(stdlib::math_exp)));
+    global_env_->define("min", KaynatValue(CallableType(stdlib::math_min)));
+    global_env_->define("max", KaynatValue(CallableType(stdlib::math_max)));
+    global_env_->define("factorial", KaynatValue(CallableType(stdlib::math_factorial)));
+    global_env_->define("gcd", KaynatValue(CallableType(stdlib::math_gcd)));
+    global_env_->define("lcm", KaynatValue(CallableType(stdlib::math_lcm)));
+    global_env_->define("is_prime", KaynatValue(CallableType(stdlib::math_is_prime)));
+    global_env_->define("random", KaynatValue(CallableType(stdlib::math_random)));
+    global_env_->define("pi", KaynatValue(CallableType(stdlib::math_pi)));
     
-    global_env_->define("pow", KaynatValue(CallableType([](std::vector<KaynatValue> args) -> KaynatValue {
-        if (args.size() != 2) {
-            throw RuntimeError("pow expects 2 arguments", 0, 0);
-        }
-        auto base = args[0].as_float();
-        auto exp = args[1].as_float();
-        if (!base) {
-            auto int_val = args[0].as_int();
-            if (int_val) base = static_cast<double>(*int_val);
-        }
-        if (!exp) {
-            auto int_val = args[1].as_int();
-            if (int_val) exp = static_cast<double>(*int_val);
-        }
-        if (!base || !exp) {
-            throw TypeError("Number", "unknown", 0, 0);
-        }
-        return KaynatValue(std::pow(*base, *exp));
-    })));
+    // String functions (20)
+    global_env_->define("uppercase", KaynatValue(CallableType(stdlib::string_uppercase)));
+    global_env_->define("lowercase", KaynatValue(CallableType(stdlib::string_lowercase)));
+    global_env_->define("string_length", KaynatValue(CallableType(stdlib::string_length)));
+    global_env_->define("trim", KaynatValue(CallableType(stdlib::string_trim)));
+    global_env_->define("split", KaynatValue(CallableType(stdlib::string_split)));
+    global_env_->define("join", KaynatValue(CallableType(stdlib::string_join)));
+    global_env_->define("replace", KaynatValue(CallableType(stdlib::string_replace)));
+    global_env_->define("starts_with", KaynatValue(CallableType(stdlib::string_starts_with)));
+    global_env_->define("ends_with", KaynatValue(CallableType(stdlib::string_ends_with)));
+    global_env_->define("contains", KaynatValue(CallableType(stdlib::string_contains)));
+    global_env_->define("substring", KaynatValue(CallableType(stdlib::string_substring)));
+    global_env_->define("index_of", KaynatValue(CallableType(stdlib::string_index_of)));
+    global_env_->define("string_reverse", KaynatValue(CallableType(stdlib::string_reverse)));
+    global_env_->define("string_repeat", KaynatValue(CallableType(stdlib::string_repeat)));
+    global_env_->define("pad_left", KaynatValue(CallableType(stdlib::string_pad_left)));
+    global_env_->define("pad_right", KaynatValue(CallableType(stdlib::string_pad_right)));
+    global_env_->define("to_number", KaynatValue(CallableType(stdlib::string_to_number)));
+    global_env_->define("to_list", KaynatValue(CallableType(stdlib::string_to_list)));
+    global_env_->define("is_empty", KaynatValue(CallableType(stdlib::string_is_empty)));
+    global_env_->define("capitalize", KaynatValue(CallableType(stdlib::string_capitalize)));
     
-    // String functions
-    global_env_->define("uppercase", KaynatValue(CallableType([](std::vector<KaynatValue> args) -> KaynatValue {
-        if (args.size() != 1) {
-            throw RuntimeError("uppercase expects 1 argument", 0, 0);
-        }
-        auto str = args[0].as_string();
-        if (!str) {
-            throw TypeError("String", args[0].type_name(), 0, 0);
-        }
-        std::string result = *str;
-        std::transform(result.begin(), result.end(), result.begin(), ::toupper);
-        return KaynatValue(result);
-    })));
+    // List functions (20)
+    global_env_->define("list_length", KaynatValue(CallableType(stdlib::list_length)));
+    global_env_->define("list_append", KaynatValue(CallableType(stdlib::list_append)));
+    global_env_->define("list_prepend", KaynatValue(CallableType(stdlib::list_prepend)));
+    global_env_->define("list_insert", KaynatValue(CallableType(stdlib::list_insert)));
+    global_env_->define("list_remove", KaynatValue(CallableType(stdlib::list_remove)));
+    global_env_->define("list_get", KaynatValue(CallableType(stdlib::list_get)));
+    global_env_->define("list_set", KaynatValue(CallableType(stdlib::list_set)));
+    global_env_->define("list_slice", KaynatValue(CallableType(stdlib::list_slice)));
+    global_env_->define("list_sort", KaynatValue(CallableType(stdlib::list_sort)));
+    global_env_->define("list_reverse", KaynatValue(CallableType(stdlib::list_reverse)));
+    global_env_->define("list_contains", KaynatValue(CallableType(stdlib::list_contains)));
+    global_env_->define("list_index_of", KaynatValue(CallableType(stdlib::list_index_of)));
+    global_env_->define("list_min", KaynatValue(CallableType(stdlib::list_min)));
+    global_env_->define("list_max", KaynatValue(CallableType(stdlib::list_max)));
+    global_env_->define("list_sum", KaynatValue(CallableType(stdlib::list_sum)));
+    global_env_->define("list_filter", KaynatValue(CallableType(stdlib::list_filter)));
+    global_env_->define("list_map", KaynatValue(CallableType(stdlib::list_map)));
+    global_env_->define("list_reduce", KaynatValue(CallableType(stdlib::list_reduce)));
+    global_env_->define("list_unique", KaynatValue(CallableType(stdlib::list_unique)));
+    global_env_->define("list_flatten", KaynatValue(CallableType(stdlib::list_flatten)));
     
-    global_env_->define("lowercase", KaynatValue(CallableType([](std::vector<KaynatValue> args) -> KaynatValue {
-        if (args.size() != 1) {
-            throw RuntimeError("lowercase expects 1 argument", 0, 0);
-        }
-        auto str = args[0].as_string();
-        if (!str) {
-            throw TypeError("String", args[0].type_name(), 0, 0);
-        }
-        std::string result = *str;
-        std::transform(result.begin(), result.end(), result.begin(), ::tolower);
-        return KaynatValue(result);
-    })));
+    // File functions (12)
+    global_env_->define("file_read", KaynatValue(CallableType(stdlib::file_read)));
+    global_env_->define("file_write", KaynatValue(CallableType(stdlib::file_write)));
+    global_env_->define("file_append", KaynatValue(CallableType(stdlib::file_append)));
+    global_env_->define("file_exists", KaynatValue(CallableType(stdlib::file_exists)));
+    global_env_->define("file_delete", KaynatValue(CallableType(stdlib::file_delete)));
+    global_env_->define("file_copy", KaynatValue(CallableType(stdlib::file_copy)));
+    global_env_->define("file_move", KaynatValue(CallableType(stdlib::file_move)));
+    global_env_->define("file_size", KaynatValue(CallableType(stdlib::file_size)));
+    global_env_->define("file_list_dir", KaynatValue(CallableType(stdlib::file_list_dir)));
+    global_env_->define("file_create_dir", KaynatValue(CallableType(stdlib::file_create_dir)));
+    global_env_->define("file_is_file", KaynatValue(CallableType(stdlib::file_is_file)));
+    global_env_->define("file_is_dir", KaynatValue(CallableType(stdlib::file_is_dir)));
+    
+    // Date functions (5)
+    global_env_->define("date_now", KaynatValue(CallableType(stdlib::date_now)));
+    global_env_->define("date_format", KaynatValue(CallableType(stdlib::date_format)));
+    global_env_->define("date_parse", KaynatValue(CallableType(stdlib::date_parse)));
+    global_env_->define("date_add_days", KaynatValue(CallableType(stdlib::date_add_days)));
+    global_env_->define("date_diff_days", KaynatValue(CallableType(stdlib::date_diff_days)));
+    
+    // Random functions (6)
+    global_env_->define("random_int", KaynatValue(CallableType(stdlib::random_int)));
+    global_env_->define("random_float", KaynatValue(CallableType(stdlib::random_float)));
+    global_env_->define("random_choice", KaynatValue(CallableType(stdlib::random_choice)));
+    global_env_->define("random_shuffle", KaynatValue(CallableType(stdlib::random_shuffle)));
+    global_env_->define("random_sample", KaynatValue(CallableType(stdlib::random_sample)));
+    global_env_->define("random_seed", KaynatValue(CallableType(stdlib::random_seed)));
+    
+    // Network functions (2)
+    global_env_->define("http_get", KaynatValue(CallableType(stdlib::network_http_get)));
+    global_env_->define("http_post", KaynatValue(CallableType(stdlib::network_http_post)));
+    
+    // JSON functions (3)
+    global_env_->define("json_parse", KaynatValue(CallableType(stdlib::json_parse)));
+    global_env_->define("json_stringify", KaynatValue(CallableType(stdlib::json_stringify)));
+    global_env_->define("json_format", KaynatValue(CallableType(stdlib::json_format)));
+    
+    // Crypto functions (5)
+    global_env_->define("sha256", KaynatValue(CallableType(stdlib::crypto_sha256)));
+    global_env_->define("md5", KaynatValue(CallableType(stdlib::crypto_md5)));
+    global_env_->define("base64_encode", KaynatValue(CallableType(stdlib::crypto_base64_encode)));
+    global_env_->define("base64_decode", KaynatValue(CallableType(stdlib::crypto_base64_decode)));
+    global_env_->define("random_token", KaynatValue(CallableType(stdlib::crypto_random_token)));
+    
+    // Pattern functions (6)
+    global_env_->define("pattern_match", KaynatValue(CallableType(stdlib::pattern_match)));
+    global_env_->define("pattern_find_all", KaynatValue(CallableType(stdlib::pattern_find_all)));
+    global_env_->define("pattern_replace", KaynatValue(CallableType(stdlib::pattern_replace)));
+    global_env_->define("pattern_split", KaynatValue(CallableType(stdlib::pattern_split)));
+    global_env_->define("is_email", KaynatValue(CallableType(stdlib::pattern_is_email)));
+    global_env_->define("is_url", KaynatValue(CallableType(stdlib::pattern_is_url)));
 }
 
 } // namespace kaynat
