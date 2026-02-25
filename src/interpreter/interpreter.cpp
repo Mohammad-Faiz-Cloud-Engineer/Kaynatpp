@@ -91,6 +91,12 @@ KaynatValue Interpreter::eval_program(const std::shared_ptr<ProgramNode>& node) 
     
     for (const auto& stmt : node->statements) {
         if (return_flag_) break;
+        
+        // Skip empty statements (comments)
+        if (std::holds_alternative<std::monostate>(stmt)) {
+            continue;
+        }
+        
         last_value = evaluate(stmt);
     }
     
@@ -100,7 +106,7 @@ KaynatValue Interpreter::eval_program(const std::shared_ptr<ProgramNode>& node) 
 KaynatValue Interpreter::eval_literal(const std::shared_ptr<LiteralNode>& node) {
     switch (node->type) {
         case LiteralNode::Type::INTEGER:
-            return KaynatValue(std::stoll(node->value));
+            return KaynatValue(static_cast<int64_t>(std::stoll(node->value)));
         
         case LiteralNode::Type::FLOAT:
             return KaynatValue(std::stod(node->value));

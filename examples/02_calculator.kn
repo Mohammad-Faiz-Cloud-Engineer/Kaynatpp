@@ -1,5 +1,5 @@
 begin program.
-note. simple calculator demonstration.
+note simple calculator demonstration.
 
 set a to 10.
 set b to 5.

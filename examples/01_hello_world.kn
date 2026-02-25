@@ -1,3 +1,4 @@
 begin program.
-say hello, world.
+set greeting to "Hello, World!".
+say greeting.
 end program.

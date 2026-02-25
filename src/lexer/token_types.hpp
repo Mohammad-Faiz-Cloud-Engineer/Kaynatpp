@@ -112,7 +112,7 @@ enum class TokenType {
     DO,
     BY,
     DEFAULT,
-    REPEAT,
+    // REPEAT already defined in String operations
     TIMES,
     WHILE,
     UNTIL,
@@ -178,7 +178,7 @@ enum class TokenType {
     FAILS,
     MESSAGE,
     AFTER,
-    RAISE,
+    // RAISE already defined in Arithmetic
     ERROR,
     SAYING,
     
@@ -292,7 +292,7 @@ enum class TokenType {
     WINDOW,
     TITLE,
     WIDTH,
-    HEIGHT,
+    // HEIGHT already defined in DSA
     BACKGROUND,
     LABEL,
     FONT,
@@ -333,7 +333,7 @@ enum class TokenType {
     
     // Keywords - Async
     RUN,
-    BACKGROUND,
+    // BACKGROUND already defined in GUI
     WAIT,
     FINISH,
     FINISHES,
@@ -403,7 +403,7 @@ enum class TokenType {
     UTILS,
     STRING_TOOLS,
     CALCULATE,
-    AREA,
+    // AREA already defined in GUI
     WELCOME,
     KAYNAT,
     

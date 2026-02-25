@@ -80,6 +80,17 @@ bool Parser::is_at_end() const {
 }
 
 ASTNode Parser::parse_statement() {
+    // Comments: note. text. or note text.
+    if (match(TokenType::NOTE)) {
+        // Skip everything until we find a period
+        while (!is_at_end() && !check(TokenType::PERIOD)) {
+            advance();
+        }
+        consume(TokenType::PERIOD, "Expected '.' at end of comment");
+        // Return empty statement
+        return ASTNode();
+    }
+    
     // Variable assignment: set x to 5.
     if (match(TokenType::SET) || match(TokenType::LET)) {
         return parse_assignment();
