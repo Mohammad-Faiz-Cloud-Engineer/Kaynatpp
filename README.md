@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
-[![Status](https://img.shields.io/badge/status-production%20ready-brightgreen.svg)](https://github.com/Mohammad-Faiz-Cloud-Engineer/Kaynatpp)
+[![Status](https://img.shields.io/badge/status-beta-orange.svg)](https://github.com/Mohammad-Faiz-Cloud-Engineer/Kaynatpp)
 
 ### *Named Kaynat++. Built in silence. Meant to speak.*
 
@@ -249,11 +249,12 @@ Built with C++17. Uses smart pointers everywhere, no manual memory management. C
 - Error system provides clear messages with line numbers
 
 **Code Quality:**
-- 5,077 lines of production-grade C++
-- Zero memory leaks
+- 5,000+ lines of production-grade C++17
+- Zero memory leaks (verified)
 - Zero compiler warnings
 - Zero dead code
-- Fully tested and verified
+- Clean architecture
+- Comprehensive documentation
 
 ---
 
@@ -271,13 +272,29 @@ Every time someone writes code in Kaynat++, they're using a language born from h
 
 ## Project Status
 
-**Status:** Production Ready ✅  
-**Version:** 1.0.0  
-**Quality:** Verified and tested
+**Status:** Beta - Core Features Working ✅  
+**Version:** 0.9.0  
+**Quality:** Production-grade code, partial features
 
-The core language is complete and working. You can write real programs right now. The standard library is implemented. Examples are included. Documentation is comprehensive.
+The core language is complete and working. You can write real programs with variables, functions, loops, conditionals, and use 89 standard library functions. The code is clean, optimized, and follows corporate C++ standards.
 
-What's not done: Advanced features like OOP, data structures, and GUI are documented but not implemented yet. The language works perfectly for what it does. Everything else is future work.
+**What Works (35% Complete):**
+- ✅ Core language features (variables, functions, loops, conditionals)
+- ✅ Standard library (89 functions: math, string, list, file, date, random, pattern)
+- ✅ Basic GUI (text-based rendering)
+- ✅ Error messages with line numbers
+- ✅ REPL mode
+
+**What's Not Implemented Yet (65%):**
+- ❌ Object-oriented programming (classes, inheritance)
+- ❌ Data structures (Stack, Queue, Tree, Graph)
+- ❌ Error handling (try-catch)
+- ❌ Module system (import/export)
+- ❌ Async/concurrency
+- ❌ Advanced control flow (break, continue, switch/case)
+- ❌ Real GUI (needs SDL2 integration)
+
+See [notimplementedyet.md](notimplementedyet.md) for complete feature status.
 
 ---
 
